@@ -1,14 +1,8 @@
 package de.ws1617.pccl.search;
 
-import java.sql.Array;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 
 import de.ws1617.pccl.fsa.Edge;
 import de.ws1617.pccl.grammar.Terminal;
@@ -27,8 +21,8 @@ public class Graph {
 	 */
 	public Graph(int v) {
 		
-		ArrayList<HashSet> adj = new ArrayList<HashSet>();
-		boolean[] finalStates = new boolean[v];
+		adj = new ArrayList<HashSet<Edge>>();
+		finalStates = new boolean[v];
 		
 	}
 
@@ -39,8 +33,7 @@ public class Graph {
 	 */
 	public void addEdge(int from, Edge edge) {
 		
-		HashSet<Edge> hs = adj.get(from);
-		hs.add(edge);
+		adj.get(from).add(edge);
 		
 	}
 
@@ -74,19 +67,21 @@ public class Graph {
 
 	/**
 	 * Make a certain state at the given index a final state.
-	 * @param index 
+	 * @param index is the corresponding state we want to set to final
 	 */
 	public void setFinalState(int index) {
-		// TODO implement me !
+		
+		finalStates[index] = false;
 	}
 
 	/**
 	 * Checks whether the state at the given index is a final state.
-	 * @param index
-	 * @return
+	 * @param index is the corresponding state we want to check
+	 * @return return returns true/false depending on wether the 
+	 * 			corresponding state is final or not
 	 */
 	public boolean isFinalState(int index) {
-		// TODO implement me !
-		return false;
+		
+		return finalStates[index];
 	}
 }
