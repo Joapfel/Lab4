@@ -6,6 +6,8 @@ import de.ws1617.pccl.grammar.Terminal;
  * A directed edge (transition) between states.
  *
  */
+
+//Comment
 public class Edge {
 
 	private int goal;
