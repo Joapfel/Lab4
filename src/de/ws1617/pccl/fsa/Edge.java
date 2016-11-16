@@ -1,4 +1,4 @@
-package de.ws1617.pccl.fsa;
+ package de.ws1617.pccl.fsa;
 
 import de.ws1617.pccl.grammar.Terminal;
 
