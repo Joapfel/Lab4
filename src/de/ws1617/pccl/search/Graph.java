@@ -62,7 +62,7 @@ public class Graph {
 		
 		for(Edge e : adj.get(from)){
 			
-			if(e.getToConsume().getValue().equals(toConsume)){
+			if(e.getToConsume().equals(toConsume)){
 				result.add(e);
 			}
 			
