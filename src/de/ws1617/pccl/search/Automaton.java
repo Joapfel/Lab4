@@ -24,13 +24,22 @@ public class Automaton {
 
 	private Graph graph;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param grammar
+	 *            the grammar object which reads the grammarFile in
+	 * @param lexicon
+	 *            same for lexicon
+	 * @param startSymbol
+	 *            is the beginning point for the fsa
+	 */
 	public Automaton(Grammar grammar, Lexicon lexicon, NonTerminal startSymbol) {
 		super();
 
-		// agenda.push(new Hypothesis(0, startSymbol.getValue().charAt(0)));
+		this.startSymbol = startSymbol;
 
 		// TODO create the union of the nonterminals from lexicon and grammar
-		nonTerminals.add(startSymbol);
 		nonTerminals.addAll(grammar.getNonTerminals());
 		nonTerminals.addAll(lexicon.getNonTerminals());
 
@@ -42,24 +51,22 @@ public class Automaton {
 	}
 
 	/**
-	 * Returns whether the give input is licensed by the grammar or not.
+	 * Returns whether the given input is licensed by the grammar or not.
 	 * 
 	 * @param input
 	 * @return
 	 */
 	public boolean recognize(String input) {
-
-		// TODO implement me !
+		
+		//call initialize method
 		ArrayList<Terminal> terms = initialize(input);
+		
+		//call successors method
+		ArrayList<Hypothesis> hps = successors(new Hypothesis(0, 0), terms);
 
-		if (!graph.getAdjacent(0).contains(terms.get(0))) {
-			throw new RuntimeException("The first word ist not processable.");
-		}
+		
 
-		Terminal before;
-		for (Terminal term : terms) {
-
-		}
+		
 
 		return false;
 	}
@@ -127,21 +134,24 @@ public class Automaton {
 	 */
 	public void addRules(Grammar gr, Lexicon lex) {
 
-		
 		// TODO implement me !
-		// for all NonTerminals in the grammer
+		// for all left hand side NonTerminals in the grammer
 		for (NonTerminal lhs : gr.getNonTerminals()) {
 
-			// for all ArrayLists in grammers HashSet
+			// for all right hand side ArrayLists in grammers HashSet
 			for (ArrayList<Symbol> rhs : gr.getRuleForLHS(lhs)) {
 
-				
-				graph.addEdge(nonTerminals.indexOf(lhs), new Edge(nonTerminals.indexOf(rhs.get(1)), (Terminal) rhs.get(0)));
-			
+				//rules are represented by edges so we want to add a
+				//edge to the graph for every rule 
+				//nonTerminals.indexOf(lhs) - is the index in the adjacency list where the new edge should be stored
+				//so in this case the adjacency list inherit the indecies from the nonTerminals list in some way
+				graph.addEdge(nonTerminals.indexOf(lhs),
+						//nonTerminals.indexOf(rhs.get(1)) - is the goal, so the vertex it is pointing to
+						//(Terminal) rhs.get(0))) - is the Terminal toConsume
+						new Edge(nonTerminals.indexOf(rhs.get(1)), (Terminal) rhs.get(0)));
 
 			}
-		
-			
+
 		}
 
 	}
