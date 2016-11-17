@@ -26,9 +26,9 @@ public class Automaton {
 
 	public Automaton(Grammar grammar, Lexicon lexicon, NonTerminal startSymbol) {
 		super();
-		
-		//agenda.push(new Hypothesis(0, startSymbol.getValue().charAt(0)));
-		
+
+		// agenda.push(new Hypothesis(0, startSymbol.getValue().charAt(0)));
+
 		// TODO create the union of the nonterminals from lexicon and grammar
 		nonTerminals.addAll(grammar.getNonTerminals());
 		nonTerminals.addAll(lexicon.getNonTerminals());
@@ -36,7 +36,15 @@ public class Automaton {
 		// TODO create a graph based on the grammar and lexicon
 		// attention: how many states do you need ?
 		graph = new Graph(nonTerminals.size() + 1);
-		
+
+		// rhs = right hand side --> the rule(s) for the given startSymbol
+		for (ArrayList<Symbol> rhs : grammar.getRuleForLHS(startSymbol)) {
+
+			// rhs.get(0) ---> the first element from the arrayList is the
+			// Terminal
+			graph.addEdge(0, new Edge(2, (Terminal) rhs.get(0)));
+		}
+
 	}
 
 	/**
@@ -48,6 +56,16 @@ public class Automaton {
 	public boolean recognize(String input) {
 
 		// TODO implement me !
+		ArrayList<Terminal> terms = initialize(input);
+
+		if (!graph.getAdjacent(0).contains(terms.get(0))) {
+			throw new RuntimeException("The first word ist not processable.");
+		}
+
+		Terminal before;
+		for (Terminal term : terms) {
+
+		}
 
 		return false;
 	}
@@ -62,7 +80,11 @@ public class Automaton {
 	private ArrayList<Hypothesis> successors(Hypothesis h, ArrayList<Terminal> input) {
 
 		// TODO implement me !
-		return null;
+		ArrayList<Hypothesis> value = new ArrayList<>();
+		for (Terminal term : input) {
+
+		}
+		return value;
 	}
 
 	/**
@@ -96,9 +118,7 @@ public class Automaton {
 	 */
 	public boolean isFinalState(Hypothesis h, List<Terminal> input) {
 		// TODO implement me !
-		if(){
-			
-		}
+
 		return false;
 	}
 
@@ -113,21 +133,21 @@ public class Automaton {
 	 */
 	public void addRules(Grammar gr, Lexicon lex) {
 
+		int position = 0;
 		// TODO implement me !
-		//for all NonTerminals in the grammer
-		for(NonTerminal rule : gr.getNonTerminals()){
-			
-			//for all ArrayLists in grammers HashSet 
-			for(ArrayList<Symbol> hs : gr.getRuleForLHS(rule)){
-				
-				
-				
+		// for all NonTerminals in the grammer
+		for (NonTerminal lhs : gr.getNonTerminals()) {
+
+			// for all ArrayLists in grammers HashSet
+			for (ArrayList<Symbol> rhs : gr.getRuleForLHS(lhs)) {
+
+				graph.addEdge(position, new Edge(position, (Terminal) rhs.get(0)));
+				position++;
+
 			}
-			
+			position++;
 			
 		}
-		
-		
 
 	}
 
