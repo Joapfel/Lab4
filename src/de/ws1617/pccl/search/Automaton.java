@@ -26,11 +26,17 @@ public class Automaton {
 
 	public Automaton(Grammar grammar, Lexicon lexicon, NonTerminal startSymbol) {
 		super();
-
+		
+		//agenda.push(new Hypothesis(0, startSymbol.getValue().charAt(0)));
+		
 		// TODO create the union of the nonterminals from lexicon and grammar
+		nonTerminals.addAll(grammar.getNonTerminals());
+		nonTerminals.addAll(lexicon.getNonTerminals());
 
 		// TODO create a graph based on the grammar and lexicon
 		// attention: how many states do you need ?
+		graph = new Graph(nonTerminals.size() + 1);
+		
 	}
 
 	/**
@@ -70,7 +76,13 @@ public class Automaton {
 	private ArrayList<Terminal> initialize(String s) {
 
 		// TODO implement me !
-		return null;
+		agenda = new Stack<>();
+
+		ArrayList<Terminal> t = new ArrayList<>();
+		for (String term : s.split("\\+s")) {
+			t.add(new Terminal(term));
+		}
+		return t;
 	}
 
 	/**
@@ -84,6 +96,9 @@ public class Automaton {
 	 */
 	public boolean isFinalState(Hypothesis h, List<Terminal> input) {
 		// TODO implement me !
+		if(){
+			
+		}
 		return false;
 	}
 
@@ -99,6 +114,20 @@ public class Automaton {
 	public void addRules(Grammar gr, Lexicon lex) {
 
 		// TODO implement me !
+		//for all NonTerminals in the grammer
+		for(NonTerminal rule : gr.getNonTerminals()){
+			
+			//for all ArrayLists in grammers HashSet 
+			for(ArrayList<Symbol> hs : gr.getRuleForLHS(rule)){
+				
+				
+				
+			}
+			
+			
+		}
+		
+		
 
 	}
 

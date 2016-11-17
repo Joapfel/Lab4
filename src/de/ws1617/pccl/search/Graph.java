@@ -9,6 +9,7 @@ import de.ws1617.pccl.grammar.Terminal;
 
 public class Graph {
 
+	//adjacency list
 	private ArrayList<HashSet<Edge>> adj;
 	
 	private boolean[] finalStates;
@@ -21,7 +22,7 @@ public class Graph {
 	 */
 	public Graph(int v) {
 		
-		adj = new ArrayList<HashSet<Edge>>();
+		adj = new ArrayList<HashSet<Edge>>(v);
 		finalStates = new boolean[v];
 		
 	}
