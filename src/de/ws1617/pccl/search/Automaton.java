@@ -30,20 +30,14 @@ public class Automaton {
 		// agenda.push(new Hypothesis(0, startSymbol.getValue().charAt(0)));
 
 		// TODO create the union of the nonterminals from lexicon and grammar
+		nonTerminals.add(startSymbol);
 		nonTerminals.addAll(grammar.getNonTerminals());
 		nonTerminals.addAll(lexicon.getNonTerminals());
 
 		// TODO create a graph based on the grammar and lexicon
 		// attention: how many states do you need ?
 		graph = new Graph(nonTerminals.size() + 1);
-
-		// rhs = right hand side --> the rule(s) for the given startSymbol
-		for (ArrayList<Symbol> rhs : grammar.getRuleForLHS(startSymbol)) {
-
-			// rhs.get(0) ---> the first element from the arrayList is the
-			// Terminal
-			graph.addEdge(0, new Edge(2, (Terminal) rhs.get(0)));
-		}
+		addRules(grammar, lexicon);
 
 	}
 
@@ -133,7 +127,7 @@ public class Automaton {
 	 */
 	public void addRules(Grammar gr, Lexicon lex) {
 
-		int position = 0;
+		
 		// TODO implement me !
 		// for all NonTerminals in the grammer
 		for (NonTerminal lhs : gr.getNonTerminals()) {
@@ -141,11 +135,12 @@ public class Automaton {
 			// for all ArrayLists in grammers HashSet
 			for (ArrayList<Symbol> rhs : gr.getRuleForLHS(lhs)) {
 
-				graph.addEdge(position, new Edge(position, (Terminal) rhs.get(0)));
-				position++;
+				
+				graph.addEdge(nonTerminals.indexOf(lhs), new Edge(nonTerminals.indexOf(rhs.get(1)), (Terminal) rhs.get(0)));
+			
 
 			}
-			position++;
+		
 			
 		}
 
