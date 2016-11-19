@@ -13,11 +13,13 @@ public class Edge {
 	private int goal;
     Terminal toConsume;
 	
+    //Initialize parameters.
     public Edge(int goal, Terminal toConsume){
     	this.goal = goal;
     	this.toConsume = toConsume;
     }
 
+    //Create getter and setter methods.
 	public int getGoal() {
 		return goal;
 	}
@@ -34,6 +36,7 @@ public class Edge {
 		this.toConsume = toConsume;
 	}
 
+	//Output
 	@Override
 	public String toString() {
 		return "Edge [goal=" + goal + ", toConsume=" + toConsume + "]";

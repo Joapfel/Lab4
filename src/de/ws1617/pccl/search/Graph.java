@@ -78,7 +78,7 @@ public class Graph {
 	/**
 	 * Checks whether the state at the given index is a final state.
 	 * @param index is the corresponding state we want to check
-	 * @return return returns true/false depending on wether the 
+	 * @return return returns true/false depending on whether the 
 	 * 			corresponding state is final or not
 	 */
 	public boolean isFinalState(int index) {
