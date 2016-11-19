@@ -59,11 +59,20 @@ public class Automaton {
 	public boolean recognize(String input) {
 		
 		//call initialize method
+		//maybe we shift this later directly into the successors call but for now it is fine to have a overview
 		ArrayList<Terminal> terms = initialize(input);
 		
+		//this is the index in the nonTerminals list
+		//from the first word of the string
+		int firstIndex = nonTerminals.indexOf(terms.get(0));
+		agenda.push(new Hypothesis(0, firstIndex));
+		
 		//call successors method
-		ArrayList<Hypothesis> hps = successors(new Hypothesis(0, 0), terms);
+		ArrayList<Hypothesis> hps = successors(agenda.peek(), terms);
 
+		//First we need to implement the successors method
+		//than
+		//IMPLEMENT ME
 		
 
 		
@@ -81,9 +90,11 @@ public class Automaton {
 	private ArrayList<Hypothesis> successors(Hypothesis h, ArrayList<Terminal> input) {
 
 		// TODO implement me !
-		ArrayList<Hypothesis> value = new ArrayList<>();
+		ArrayList<Hypothesis> returnValue = new ArrayList<>();
+		//we want to return the full amount of Hypothesis including the starting one
+		returnValue.add(h);
 		for (Terminal term : input) {
-
+			
 		}
 		return value;
 	}
