@@ -1,10 +1,8 @@
 package de.ws1617.pccl.search;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Stack;
 
 import de.ws1617.pccl.fsa.Edge;
@@ -40,7 +38,20 @@ public class Automaton {
 		this.startSymbol = startSymbol;
 
 		// TODO create the union of the nonterminals from lexicon and grammar
-		nonTerminals.addAll(grammar.getNonTerminals());
+		nonTerminals.add(0, startSymbol);
+
+		// dont use "add all" here to avoid having the startSymbol multiple
+		// times in the list
+		for (NonTerminal iter : grammar.getNonTerminals()) {
+
+			// dont add the start symbol again
+			if (!iter.equals(startSymbol)) {
+
+				nonTerminals.add(iter);
+			}
+		}
+
+		// use "add all" in lexicon
 		nonTerminals.addAll(lexicon.getNonTerminals());
 
 		// TODO create a graph based on the grammar and lexicon
@@ -62,14 +73,20 @@ public class Automaton {
 	public boolean recognize(String input) {
 
 		// call initialize method
-		// maybe we shift this later directly into the successors call but for
+		//SHIFT maybe we shift this later directly into the successors call but for
 		// now it is fine to have a overview
 		ArrayList<Terminal> terms = initialize(input);
 
-		// this is the index in the nonTerminals list
-		// from the first word of the string
-		int firstIndex = nonTerminals.indexOf(terms.get(0));
-		agenda.push(new Hypothesis(0, firstIndex));
+		// check if the first element of the user input string is equal to one of the rules of the startSymbol
+		// if not we can immediately quit the program
+		//SHIFT into if statement later
+		HashSet<Edge> first = graph.getAdjacent(0);
+		if (!first.contains(terms.get(0))) {
+
+			throw new RuntimeException("Error: start symbol does not contain a rule to process the first word");
+		}
+
+		agenda.push(new Hypothesis(0, 0));
 
 		while (!agenda.isEmpty()) {
 
@@ -92,8 +109,8 @@ public class Automaton {
 			}
 
 		}
-		//if no final state is produces return false 
-		//the input is not recognized by the automata
+		// if no final state is produces return false
+		// the input is not recognized by the automata
 		return false;
 	}
 
@@ -152,13 +169,16 @@ public class Automaton {
 	 * all symbols have been processed (b) the current state is final.
 	 * 
 	 * @param h
+	 *            the hypothesis to check
 	 * @param input
-	 * @return
+	 *            the corresponding list of terminals
+	 * @return returns true or false depending on if the hypothesis is
+	 *         finalState or not
 	 */
 	public boolean isFinalState(Hypothesis h, List<Terminal> input) {
-		// TODO implement me !
 
-		return false;
+		input = (ArrayList<Terminal>) input;
+		return graph.isFinalState(h.getState()) && h.getInputIndex() == input.size();
 	}
 
 	/**
