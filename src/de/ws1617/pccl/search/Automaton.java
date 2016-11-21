@@ -46,9 +46,9 @@ public class Automaton {
 		// TODO create a graph based on the grammar and lexicon
 		// attention: how many states do you need ?
 		graph = new Graph(nonTerminals.size() + 1);
-		//set the boolean flag to false at the same index
-		graph.setFinalState(nonTerminals.size() +1);
-		//add the rules to the adj list
+		// set the boolean flag to false at the same index
+		graph.setFinalState(nonTerminals.size() + 1);
+		// add the rules to the adj list
 		addRules(grammar, lexicon);
 
 	}
@@ -60,26 +60,40 @@ public class Automaton {
 	 * @return
 	 */
 	public boolean recognize(String input) {
-		
-		//call initialize method
-		//maybe we shift this later directly into the successors call but for now it is fine to have a overview
+
+		// call initialize method
+		// maybe we shift this later directly into the successors call but for
+		// now it is fine to have a overview
 		ArrayList<Terminal> terms = initialize(input);
-		
-		//this is the index in the nonTerminals list
-		//from the first word of the string
+
+		// this is the index in the nonTerminals list
+		// from the first word of the string
 		int firstIndex = nonTerminals.indexOf(terms.get(0));
 		agenda.push(new Hypothesis(0, firstIndex));
-		
-		//call successors method
-		ArrayList<Hypothesis> hps = successors(agenda.peek(), terms);
 
-		//First we need to implement the successors method
-		//than
-		//IMPLEMENT ME
-		
+		while (!agenda.isEmpty()) {
 
-		
+			// call successors method
+			ArrayList<Hypothesis> hps = successors(agenda.pop(), terms);
 
+			for (Hypothesis iter : hps) {
+
+				if (isFinalState(iter, terms)) {
+					return true;
+				}
+
+				// we want to continue only with grammar rules not with lexicon
+				if (iter.getInputIndex() != nonTerminals.size() + 1) {
+
+					agenda.push(iter);
+
+				}
+
+			}
+
+		}
+		//if no final state is produces return false 
+		//the input is not recognized by the automata
 		return false;
 	}
 
@@ -94,18 +108,20 @@ public class Automaton {
 
 		// TODO implement me !
 		ArrayList<Hypothesis> returnValue = new ArrayList<>();
-		
-		//get the corresponding terminal for the inputIndex of the Hypothesis
+
+		// get the corresponding terminal for the inputIndex of the Hypothesis
 		Terminal next = input.get(h.getInputIndex());
-		
-		//get the edges from the current state and
-		//convert edges into hypothesis
-		for (Edge edge : graph.getAdjacent(h.getState(), next)){
-			
-			//the int goal is going to be the (current) state for the Hypothesis
-			//the int inputIndex is just the inputIndex from "h" +1 --> it is the next word in the arrayList
-			returnValue.add(new Hypothesis(edge.getGoal(), h.getInputIndex()+1));
-			
+
+		// get the edges from the current state and
+		// convert edges into hypothesis
+		for (Edge edge : graph.getAdjacent(h.getState(), next)) {
+
+			// the int goal is going to be the (current) state for the
+			// Hypothesis
+			// the int inputIndex is just the inputIndex from "h" +1 --> it is
+			// the next word in the arrayList
+			returnValue.add(new Hypothesis(edge.getGoal(), h.getInputIndex() + 1));
+
 		}
 		return returnValue;
 	}
@@ -155,7 +171,7 @@ public class Automaton {
 	 *            a Lexicon.
 	 */
 	public void addRules(Grammar gr, Lexicon lex) {
-		
+
 		int finalState = nonTerminals.size() + 1;
 		// TODO implement me !
 		// for all left hand side NonTerminals in the grammer
@@ -164,30 +180,33 @@ public class Automaton {
 			// for all right hand side ArrayLists in grammers HashSet
 			for (ArrayList<Symbol> rhs : gr.getRuleForLHS(lhs)) {
 
-				//rules are represented by edges so we want to add a
-				//edge to the graph for every rule 
-				//nonTerminals.indexOf(lhs) - is the index in the adjacency list where the new edge should be stored
-				//so in this case the adjacency list inherit the indecies from the nonTerminals list in some way
+				// rules are represented by edges so we want to add a
+				// edge to the graph for every rule
+				// nonTerminals.indexOf(lhs) - is the index in the adjacency
+				// list where the new edge should be stored
+				// so in this case the adjacency list inherit the indecies from
+				// the nonTerminals list in some way
 				graph.addEdge(nonTerminals.indexOf(lhs),
-						//nonTerminals.indexOf(rhs.get(1)) - is the goal, so the vertex it is pointing to
-						//(Terminal) rhs.get(0))) - is the Terminal toConsume
+						// nonTerminals.indexOf(rhs.get(1)) - is the goal, so
+						// the vertex it is pointing to
+						// (Terminal) rhs.get(0))) - is the Terminal toConsume
 						new Edge(nonTerminals.indexOf(rhs.get(1)), (Terminal) rhs.get(0)));
 
 			}
 
 		}
-		//do the same for the lexicon
-		for (NonTerminal lhs : lex.getNonTerminals()){
-			
+		// do the same for the lexicon
+		for (NonTerminal lhs : lex.getNonTerminals()) {
+
 			HashSet<ArrayList<Terminal>> rules = lex.getRules(lhs);
-			for(ArrayList<Terminal> list : rules){
-				
-				for(Terminal term : list){
-					
+			for (ArrayList<Terminal> list : rules) {
+
+				for (Terminal term : list) {
+
 					graph.addEdge(nonTerminals.indexOf(lhs), new Edge(finalState, term));
-					
+
 				}
-				
+
 			}
 		}
 
