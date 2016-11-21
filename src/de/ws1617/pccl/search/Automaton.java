@@ -38,7 +38,8 @@ public class Automaton {
 		this.startSymbol = startSymbol;
 
 		// TODO create the union of the nonterminals from lexicon and grammar
-		nonTerminals.add(0, startSymbol);
+		nonTerminals = new ArrayList<NonTerminal>();
+		nonTerminals.add(0, this.startSymbol);
 
 		// dont use "add all" here to avoid having the startSymbol multiple
 		// times in the list
@@ -53,12 +54,12 @@ public class Automaton {
 
 		// use "add all" in lexicon
 		nonTerminals.addAll(lexicon.getNonTerminals());
-
 		// TODO create a graph based on the grammar and lexicon
 		// attention: how many states do you need ?
 		graph = new Graph(nonTerminals.size() + 1);
-		// set the boolean flag to false at the same index
-		graph.setFinalState(nonTerminals.size() + 1);
+		
+		// set the boolean value to false at the last index
+		graph.setFinalState(nonTerminals.size());
 		// add the rules to the adj list
 		addRules(grammar, lexicon);
 
@@ -196,7 +197,7 @@ public class Automaton {
 		// TODO implement me !
 		// for all left hand side NonTerminals in the grammer
 		for (NonTerminal lhs : gr.getNonTerminals()) {
-
+			
 			// for all right hand side ArrayLists in grammers HashSet
 			for (ArrayList<Symbol> rhs : gr.getRuleForLHS(lhs)) {
 
@@ -206,6 +207,7 @@ public class Automaton {
 				// list where the new edge should be stored
 				// so in this case the adjacency list inherit the indecies from
 				// the nonTerminals list in some way
+				
 				graph.addEdge(nonTerminals.indexOf(lhs),
 						// nonTerminals.indexOf(rhs.get(1)) - is the goal, so
 						// the vertex it is pointing to

@@ -22,9 +22,22 @@ public class Graph {
 	 */
 	public Graph(int v) {
 		
+		//set the capacity
 		adj = new ArrayList<HashSet<Edge>>(v);
-		finalStates = new boolean[v];
+		//set the size
+		for(int i = 0; i < v; i++){
+			
+			adj.add(new HashSet<Edge>());
+			
+		}
 		
+		
+		finalStates = new boolean[v];
+		for(int i = 0; i < finalStates.length; i++){
+			
+			finalStates[i] = true;
+			
+		}
 	}
 
 	/**
