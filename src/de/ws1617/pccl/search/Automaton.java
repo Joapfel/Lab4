@@ -46,6 +46,9 @@ public class Automaton {
 		// TODO create a graph based on the grammar and lexicon
 		// attention: how many states do you need ?
 		graph = new Graph(nonTerminals.size() + 1);
+		//set the boolean flag to false at the same index
+		graph.setFinalState(nonTerminals.size() +1);
+		//add the rules to the adj list
 		addRules(grammar, lexicon);
 
 	}
@@ -91,12 +94,20 @@ public class Automaton {
 
 		// TODO implement me !
 		ArrayList<Hypothesis> returnValue = new ArrayList<>();
-		//we want to return the full amount of Hypothesis including the starting one
-		returnValue.add(h);
-		for (Terminal term : input) {
+		
+		//get the corresponding terminal for the inputIndex of the Hypothesis
+		Terminal next = input.get(h.getInputIndex());
+		
+		//get the edges from the current state and
+		//convert edges into hypothesis
+		for (Edge edge : graph.getAdjacent(h.getState(), next)){
+			
+			//the int goal is going to be the (current) state for the Hypothesis
+			//the int inputIndex is just the inputIndex from "h" +1 --> it is the next word in the arrayList
+			returnValue.add(new Hypothesis(edge.getGoal(), h.getInputIndex()+1));
 			
 		}
-		return value;
+		return returnValue;
 	}
 
 	/**
@@ -144,7 +155,8 @@ public class Automaton {
 	 *            a Lexicon.
 	 */
 	public void addRules(Grammar gr, Lexicon lex) {
-
+		
+		int finalState = nonTerminals.size() + 1;
 		// TODO implement me !
 		// for all left hand side NonTerminals in the grammer
 		for (NonTerminal lhs : gr.getNonTerminals()) {
@@ -163,6 +175,20 @@ public class Automaton {
 
 			}
 
+		}
+		//do the same for the lexicon
+		for (NonTerminal lhs : lex.getNonTerminals()){
+			
+			HashSet<ArrayList<Terminal>> rules = lex.getRules(lhs);
+			for(ArrayList<Terminal> list : rules){
+				
+				for(Terminal term : list){
+					
+					graph.addEdge(nonTerminals.indexOf(lhs), new Edge(finalState, term));
+					
+				}
+				
+			}
 		}
 
 	}
