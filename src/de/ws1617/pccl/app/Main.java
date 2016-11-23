@@ -27,20 +27,16 @@ public class Main {
 			// TODO print out whether the given input is in the language
 			if(automat.recognize(input)){
 				System.out.println("Processed by: ");
-				System.out.println("[Non-deterministic finite automaton]");
-				System.out.println();
+				System.out.println("[Non-deterministic finite automaton]" + "\n");
 				System.out.println("User input string: ");
-				System.out.println("[" + input + "]");
-				System.out.println();
+				System.out.println("[" + input + "]" + "\n");
 				System.out.println("Accepted: ");
 				System.out.println("[yes]");
 			}else{
 				System.out.println("Processed by: ");
-				System.out.println("[Non-deterministic finite automaton]");
-				System.out.println();
+				System.out.println("[Non-deterministic finite automaton]" + "\n");
 				System.out.println("User input string: ");
-				System.out.println("[" + input + "]");
-				System.out.println();
+				System.out.println("[" + input + "]" + "\n");
 				System.out.println("Accepted: ");
 				System.out.println("[no]");
 			}
