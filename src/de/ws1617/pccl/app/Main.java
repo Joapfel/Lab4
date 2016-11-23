@@ -15,16 +15,16 @@ public class Main {
 		
 		// read runtime arguments
 		try {
-			// TODO create grammar, lexicon, start symbol
+			
 			Grammar grammar = GrammarUtils.readGrammar(args[0]);
 			Lexicon lexicon = GrammarUtils.readLexicon(args[1]);
 			NonTerminal startSymbol = new NonTerminal(args[2]);
 			String input = args[3];
 
-			// TODO create an Automaton object
+			
 			Automaton automat = new Automaton(grammar, lexicon, startSymbol);
 			
-			// TODO print out whether the given input is in the language
+		
 			if(automat.recognize(input)){
 				System.out.println("Processed by: ");
 				System.out.println("[Non-deterministic finite automaton]" + "\n");

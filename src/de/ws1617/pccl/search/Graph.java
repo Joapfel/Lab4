@@ -17,8 +17,7 @@ public class Graph {
 	/**
 	 * Initialize the adjacency and final state array.
 	 * 
-	 * @param v
-	 *            the number of vertices in the graph.
+	 * @param v - the number of vertices in the graph.
 	 */
 	public Graph(int v) {
 		
@@ -35,6 +34,7 @@ public class Graph {
 		finalStates = new boolean[v];
 		for(int i = 0; i < finalStates.length; i++){
 			
+			//reverse procedure of the exercise, but it works the same
 			finalStates[i] = true;
 			
 		}
@@ -59,9 +59,9 @@ public class Graph {
 	/**
 	 * Returns all edges that point from a certain state to adjacent states and can be reached when consuming the given {@link Terminal}.
 	 * 
-	 * @param from the current state.
-	 * @param toConsume the next terminal to consume.
-	 * @return a set of edges adjacent to the from state reachable via the terminal toConsume.
+	 * @param from -  the current state.
+	 * @param toConsume -  the next terminal to consume.
+	 * @return - a set of edges adjacent to the from state reachable via the terminal toConsume.
 	 */
 	public HashSet<Edge> getAdjacent(int from, Terminal toConsume) {
 	
@@ -81,7 +81,7 @@ public class Graph {
 
 	/**
 	 * Make a certain state at the given index a final state.
-	 * @param index is the corresponding state we want to set to final
+	 * @param index -  is the corresponding state we want to set to final
 	 */
 	public void setFinalState(int index) {
 		
@@ -90,8 +90,8 @@ public class Graph {
 
 	/**
 	 * Checks whether the state at the given index is a final state.
-	 * @param index is the corresponding state we want to check
-	 * @return return returns true/false depending on whether the 
+	 * @param index -  is the corresponding state we want to check
+	 * @return - returns true/false depending on whether the 
 	 * 			corresponding state is final or not
 	 */
 	public boolean isFinalState(int index) {
