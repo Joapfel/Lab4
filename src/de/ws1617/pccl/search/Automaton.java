@@ -39,30 +39,17 @@ public class Automaton {
 
 		// TODO create the union of the nonterminals from lexicon and grammar
 		nonTerminals = new ArrayList<NonTerminal>();
-		nonTerminals.add(0, this.startSymbol);
-
-		// dont use "add all" here to avoid having the startSymbol multiple
-		// times in the list
-		for (NonTerminal iter : grammar.getNonTerminals()) {
-
-			// dont add the start symbol again
-			if (!iter.equals(startSymbol)) {
-
-				nonTerminals.add(iter);
-			}
-		}
-
-		// use "add all" in lexicon
+		
+		nonTerminals.addAll(grammar.getNonTerminals());
 		nonTerminals.addAll(lexicon.getNonTerminals());
 		// TODO create a graph based on the grammar and lexicon
 		// attention: how many states do you need ?
-		graph = new Graph(nonTerminals.size() + 1);
+		graph = new Graph(nonTerminals.size()+1);
 		
 		// set the boolean value to false at the last index
 		graph.setFinalState(nonTerminals.size());
 		// add the rules to the adj list
 		addRules(grammar, lexicon);
-
 	}
 
 	/**
@@ -72,28 +59,21 @@ public class Automaton {
 	 * @return
 	 */
 	public boolean recognize(String input) {
-
+	
 		// call initialize method
 		//SHIFT maybe we shift this later directly into the successors call but for
 		// now it is fine to have a overview
 		ArrayList<Terminal> terms = initialize(input);
-
-		// check if the first element of the user input string is equal to one of the rules of the startSymbol
-		// if not we can immediately quit the program
-		//SHIFT into if statement later
-		HashSet<Edge> first = graph.getAdjacent(0);
-		if (!first.contains(terms.get(0))) {
-
-			throw new RuntimeException("Error: start symbol does not contain a rule to process the first word");
-		}
-
-		agenda.push(new Hypothesis(0, 0));
+	
+		int start = nonTerminals.indexOf(startSymbol);
+	
+		agenda.push(new Hypothesis(start, 0));
 
 		while (!agenda.isEmpty()) {
 
 			// call successors method
 			ArrayList<Hypothesis> hps = successors(agenda.pop(), terms);
-
+		
 			for (Hypothesis iter : hps) {
 
 				if (isFinalState(iter, terms)) {
@@ -126,7 +106,10 @@ public class Automaton {
 
 		// TODO implement me !
 		ArrayList<Hypothesis> returnValue = new ArrayList<>();
-
+		
+		//preventing exception
+		if(h.getInputIndex() >= input.size()) return returnValue;
+	
 		// get the corresponding terminal for the inputIndex of the Hypothesis
 		Terminal next = input.get(h.getInputIndex());
 
@@ -158,7 +141,8 @@ public class Automaton {
 		agenda = new Stack<>();
 
 		ArrayList<Terminal> t = new ArrayList<>();
-		for (String term : s.split("\\+s")) {
+		for (String term : s.split("\\s+")) {
+			
 			t.add(new Terminal(term));
 		}
 		return t;
@@ -179,7 +163,7 @@ public class Automaton {
 	public boolean isFinalState(Hypothesis h, List<Terminal> input) {
 
 		input = (ArrayList<Terminal>) input;
-		return graph.isFinalState(h.getState()) && h.getInputIndex() == input.size();
+		return graph.isFinalState(h.getState())==false && h.getInputIndex() == input.size();
 	}
 
 	/**
@@ -193,7 +177,7 @@ public class Automaton {
 	 */
 	public void addRules(Grammar gr, Lexicon lex) {
 
-		int finalState = nonTerminals.size() + 1;
+		int finalState = nonTerminals.size();
 		// TODO implement me !
 		// for all left hand side NonTerminals in the grammer
 		for (NonTerminal lhs : gr.getNonTerminals()) {
