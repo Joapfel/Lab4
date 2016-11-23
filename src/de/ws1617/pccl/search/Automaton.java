@@ -80,13 +80,8 @@ public class Automaton {
 					return true;
 				}
 
-				// we want to continue only with grammar rules not with lexicon
-				if (iter.getInputIndex() != nonTerminals.size() + 1) {
 
-					agenda.push(iter);
-
-				}
-
+				agenda.push(iter);
 			}
 
 		}
