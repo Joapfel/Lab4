@@ -43,7 +43,6 @@ public class Automaton {
 		
 		// create a graph based on the grammar and lexicon
 		// attention: how many states do you need ?
-		
 		graph = new Graph(nonTerminals.size()+1);
 		
 		// set the boolean value to false at the last index
@@ -105,12 +104,10 @@ public class Automaton {
 		Terminal next = input.get(h.getInputIndex());
 
 		// get the edges from the current state and convert edges into Hypothesis
-
 		for (Edge edge : graph.getAdjacent(h.getState(), next)) {
 
 			// the int goal is going to be the (current) state for the Hypothesis
 			// the int inputIndex is just the inputIndex from "h" +1 --> it is the next word in the arrayList
-			
 			returnValue.add(new Hypothesis(edge.getGoal(), h.getInputIndex() + 1));
 
 		}
@@ -172,10 +169,9 @@ public class Automaton {
 				// rules are represented by edges so we want to add a edge to the graph for every rule
 				// nonTerminals.indexOf(lhs) - is the index in the adjacency list where the new edge should be stored
 				// so in this case the adjacency list inherit the indices from the nonTerminals list in some way
-				
 				graph.addEdge(nonTerminals.indexOf(lhs),
+						
 						// nonTerminals.indexOf(rhs.get(1)) - is the goal, so the vertex it is pointing to (Terminal) rhs.get(0))) - is the Terminal toConsume
-					
 						new Edge(nonTerminals.indexOf(rhs.get(1)), (Terminal) rhs.get(0)));
 
 			}

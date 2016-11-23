@@ -23,6 +23,7 @@ public class Graph {
 		
 		//set the capacity
 		adj = new ArrayList<HashSet<Edge>>(v);
+		
 		//set the size
 		for(int i = 0; i < v; i++){
 			
